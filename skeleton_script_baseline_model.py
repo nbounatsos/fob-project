@@ -51,7 +51,7 @@ def parse_blosum(path):
     blosum_dict = {}
     for aa in aas:
         blosum_dict[aa] = {}
-
+    print(blosum_dict)
     #########################
     ### START CODING HERE ###
     #########################
