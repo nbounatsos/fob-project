@@ -168,10 +168,10 @@ def calculate_coordinates(predictor_score_dict, benchmark_dict, out_filepath):
     # Use the following if-statement and replace the question mark with the type of the predictor.
     # It will put the ROC curve at the correct side of the diagonal line.
 
-    # if type_predictor == ? :
-    #     sorted_score_hgvs_pairs = sorted(score_hgvs_pairs)
-    # else:
-    #     sorted_score_hgvs_pairs = sorted(score_hgvs_pairs, reverse=True)
+    if type_predictor == 'polyphen':
+        sorted_score_hgvs_pairs = sorted(score_hgvs_pairs)
+    else:
+        sorted_score_hgvs_pairs = sorted(score_hgvs_pairs, reverse=True)
 
     #########################
     ###  END CODING HERE  ###
@@ -216,7 +216,10 @@ def calculate_coordinates(predictor_score_dict, benchmark_dict, out_filepath):
         # Determine whether the SNP is classified by the benchmark as:
         #    Pathogenic -> actual negative, thus a false positive (x-coordinate)
         #    Benign  -> actual positive, thus a true positive (y-coordinate)
-
+        if score == 1:
+            num_pathogenic = num_pathogenic +1
+        elif score == 0:
+            num_benign = num_benign + 1
         # Increase the respective value of num_benign or num_pathogenic
 
         # Now, you need to calculate TPR and FPR for unique scores as TP/P and FP/N, respectively,
@@ -225,6 +228,8 @@ def calculate_coordinates(predictor_score_dict, benchmark_dict, out_filepath):
         # Calculate the rates if HGVS score index i is the index of the score before a breakpoint
         # (use index_prebreakpoint_score). Also, append the score to coordinate_score.
 
+
+        coordinate_score.append(score)
 
         #########################
         ###  END CODING HERE  ###
