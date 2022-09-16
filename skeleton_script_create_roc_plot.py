@@ -215,11 +215,17 @@ def calculate_coordinates(predictor_score_dict, benchmark_dict, out_filepath):
         #########################
         # Determine whether the SNP is classified by the benchmark as:
         #    Pathogenic -> actual negative, thus a false positive (x-coordinate)
-        #    Benign  -> actual positive, thus a true positive (y-coordinate)
-        if score == 1:
-            num_pathogenic = num_pathogenic +1
-        elif score == 0:
-            num_benign = num_benign + 1
+        #    Benign  -> actual positive, thus a true positive (y-coordinate)        
+
+        for key in benchmark_dict:
+            if hgvs in key:
+                if benchmark_dict[key]=='Pathogenic':
+                    # print(score, 'Pathogenic')
+                    num_pathogenic+=1
+                elif benchmark_dict[key]=='Benign':
+                    # print(score, 'Benign')
+                    num_benign+=1
+
         # Increase the respective value of num_benign or num_pathogenic
 
         # Now, you need to calculate TPR and FPR for unique scores as TP/P and FP/N, respectively,
@@ -227,10 +233,12 @@ def calculate_coordinates(predictor_score_dict, benchmark_dict, out_filepath):
         # to the corresponding lists: tpr is a list of y-coordinates and fpr is a list of x-coordinates.
         # Calculate the rates if HGVS score index i is the index of the score before a breakpoint
         # (use index_prebreakpoint_score). Also, append the score to coordinate_score.
-
-
+        
+        for j in range(len(index_prebreakpoint_score)):
+            if i==index_prebreakpoint_score[j]:
+                fpr.append(num_pathogenic/total_pathogenic)
+                tpr.append(num_benign/total_benign)
         coordinate_score.append(score)
-
         #########################
         ###  END CODING HERE  ###
         #########################
@@ -260,7 +268,7 @@ def integrate(fpr, tpr):
         ### START CODING HERE ###
         #########################
         # Calculate AUC
-
+        
         #########################
         ###  END CODING HERE  ###
         #########################

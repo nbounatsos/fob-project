@@ -69,6 +69,8 @@ def parse_blosum(path):
     ###  END CODING HERE  ###
     #########################
 
+    print(blosum_dict)
+
     return blosum_dict
 
 def parse_vep(path):
