@@ -198,6 +198,7 @@ def calculate_coordinates(predictor_score_dict, benchmark_dict, out_filepath):
     for i in range(len(sorted_score_hgvs_pairs)):
         score = sorted_score_hgvs_pairs[i][0]
         if previous_score != score:
+
             # Add index of the score before the breakpoint
             index_prebreakpoint_score.append(i - 1)
         previous_score = score
@@ -225,7 +226,6 @@ def calculate_coordinates(predictor_score_dict, benchmark_dict, out_filepath):
                 elif benchmark_dict[key]=='Benign':
                     # print(score, 'Benign')
                     num_benign+=1
-
         # Increase the respective value of num_benign or num_pathogenic
 
         # Now, you need to calculate TPR and FPR for unique scores as TP/P and FP/N, respectively,
@@ -236,8 +236,8 @@ def calculate_coordinates(predictor_score_dict, benchmark_dict, out_filepath):
         
         for j in range(len(index_prebreakpoint_score)):
             if i==index_prebreakpoint_score[j]:
-                fpr.append(num_pathogenic/total_pathogenic)
-                tpr.append(num_benign/total_benign)
+                fpr.append(float(num_pathogenic/total_pathogenic))
+                tpr.append(float(num_benign/total_benign))
         coordinate_score.append(score)
         #########################
         ###  END CODING HERE  ###
@@ -255,7 +255,7 @@ def integrate(fpr, tpr):
     """
         Calculates the Area Under the Curve (AUC) for a given list of coordinates.
         :param fpr: a list of FPRs
-        :param tpr: a list of TPRs
+        :param tpr: a list of TPRs for j in range(len(index_prebreakpoint_score)):
         :return: a float with AUC
     """
 
@@ -268,7 +268,19 @@ def integrate(fpr, tpr):
         ### START CODING HERE ###
         #########################
         # Calculate AUC
+
+        x = cur_fpr - last_fpr
+        y = cur_tpr - last_tpr
+
+        # if(last_fpr==cur_fpr):
+        #     auc += cur_tpr*cur_fpr
+        # elif(last_tpr==cur_tpr):
+        #     auc += cur_tpr*cur_fpr
+        # elif():
         
+
+        auc+=(x*last_tpr)
+        auc+=(x*y)/2
         #########################
         ###  END CODING HERE  ###
         #########################
